@@ -1,0 +1,29 @@
+{
+  "name": "sweethymns-api",
+  "version": "0.0.0",
+  "description": "This is the SweetHymns RESTful API.",
+  "keywords": [
+    "openapi",
+    "swagger"
+  ],
+  "homepage": "https://sweethymns.com",
+  "bugs": {
+    "url": "https://github.com/sweethymns/sweethymns-api/issues",
+    "email" : "issues@sweethymns.com"
+  },
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Abel Nieva",
+    "email": "abel@abelnieva.com",
+    "url": "https://github.com/abel-nieva"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sweethymns/sweethymns-api.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true
+}

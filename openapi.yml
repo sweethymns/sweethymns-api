@@ -1,0 +1,383 @@
+openapi: 3.0.2
+
+info:
+  title: SweetHymns API
+  description: Basado en principios REST simples, los puntos finales de la API
+    web de SweetHymns devuelven metadatos JSON sobre autores, músicos, himnarios
+    e himnos, directamente desde el Catálogo de datos de SweetHymns.
+  termsOfService: https://sweethymns.com/terms
+  contact:
+    name: API Support
+    url: https://sweethymns.com/support
+    email: support@sweethymns.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+
+servers:
+  - url: https://api.sweethymns.com/v1
+    description: Production server
+
+paths:
+  /hymnals:
+    get:
+      tags:
+        - Himnarios
+      summary: Recupera múltiples himnarios.
+      description: Obtenga información del catálogo de SweetHymns para varios
+        himnarios identificados por sus IDs de SweetHymns.
+      operationId: getMultipleHymnals
+      parameters:
+        - name: ids
+          in: query
+          description: "Una lista separada por comas de los IDs de SweetHymns
+            para los himnarios. Máximo: 50 IDs."
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: En caso de éxito, el código de estado HTTP en el
+            encabezado de la respuesta es 200 OK y el cuerpo de la respuesta
+            contiene un objeto himnario. El objeto himnario contiene una matriz
+            de objetos himnarios simplificados (envueltos en un objeto de
+            paginación) en formato JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hymnals:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SimplifiedHymnal'
+  /hymnals/{id}:
+    get:
+      tags:
+        - Himnarios
+      summary: Recupera un himnario.
+      description: Recupera información del catálogo de SweetHymns para
+        un himnario identificado por su ID único de SweetHymns.
+      operationId: getAnHymnal
+      parameters:
+        - name: id
+          in: path
+          description: El ID de SweetHymns para el himnario.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: En caso de éxito, el código de estado HTTP en el
+            encabezado de la respuesta es 200 OK y el cuerpo de la respuesta
+            contiene un objeto himnario en formato JSON.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hymnal'
+  /hymns:
+    get:
+      tags:
+        - Himnos
+      summary: Recupera múltiples himnos.
+      description: Recupera información del catálogo de SweetHymns para
+        múltiples himnos identificados por sus IDs de SweetHymns.
+      operationId: getMultipleHymns
+      parameters:
+        - name: ids
+          in: query
+          description: "Una lista separada por comas de los IDs de SweetHymns
+            para los himnos. Máximo: 50 IDs."
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: En caso de éxito, el código de estado HTTP en el
+            encabezado de la respuesta es 200 OK y el cuerpo de la respuesta
+            contiene un objeto himnos. El objeto himnos contiene una matriz de
+            objetos himnos simplificados (envueltos en un objeto de paginación)
+            en formato JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hymns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SimplifiedHymn'
+  /hymns/{id}:
+    get:
+      tags:
+        - Himnos
+      summary: Recuperar un himno.
+      description: Recupera información del catálogo de SweetHymns para un himno
+        identificado por su ID único de SweetHymns.
+      operationId: getAnHymn
+      parameters:
+        - name: id
+          in: path
+          description: El ID de SweetHymns para el himno.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: En caso de éxito, el código de estado HTTP en el
+            encabezado de la respuesta es 200 OK y el cuerpo de la respuesta
+            contiene un objeto himno en formato JSON.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hymn'
+
+components:
+  schemas:
+    Copyright:
+      type: object
+      required:
+        - text
+        - type
+      properties:
+        text:
+          description: El texto de copyright de este himnario.
+          type: string
+        type:
+          description: "El tipo de copyright: \"C\" = el copyright, \"P\" = el
+            copyright de grabación de sonido (performance)."
+          type: string
+    ExternalURL:
+      type: object
+      required:
+        - "{key}"
+      properties:
+        "{key}":
+          description: "El tipo de URL, por ejemplo: - \"sweethymns\": la URL de
+            SweetHymns para el objeto."
+          type: string
+      example:
+        sweethymns: https://sweethymns.com/amazing-grace
+    Hymn:
+      type: object
+      required:
+        - authors
+        - hymnal
+        - musicians
+        - name
+        - type
+      properties:
+        authors:
+          description: Los autores que escribieron el himno. Cada objeto autor
+            incluye un enlace en \"href\" a información más detallada sobre el
+            autor.
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplifiedAuthor'
+        external_urls:
+          $ref: '#/components/schemas/ExternalURL'
+        href:
+          description: Un enlace al endpoint de la API web que proporciona
+            detalles completos del himno.
+          type: string
+        hymn_type:
+          description: "El tipo de himno: \"hymn\", \"psalm\" o \"song\"."
+          type: string
+        hymnal:
+          description: El himnario en el que aparece la pista. El objeto
+            himnario incluye un enlace en \"href\" a información completa sobre
+            el himnario.
+          type: object
+          $ref:
+        id:
+          description: El ID de SweetHymns para el himno.
+          type: string
+        musicians:
+          description: Los músicos que compusieron el himno. Cada objeto músico
+            incluye un enlace en \"href\" a información más detallada sobre el
+            músico.
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplifiedMusician'
+        name:
+          description: El nombre del himno.
+          type: string
+        type:
+          description: "El tipo de objeto: \"hymn\"."
+          type: string
+        uri:
+          description: La URI de SweetHymns para el himno.
+          type: string
+    Hymnal:
+      type: object
+      required:
+        - authors
+        - copyrights
+      properties:
+        authors:
+          description: Los autores del himnario. Cada objeto autor incluye un
+            enlace en \"href\" a información más detallada sobre el autor.
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplifiedAuthor'
+        copyrights:
+          type: array
+          description: Las declaraciones de copyright del himnario.
+          items:
+            $ref: '#/components/schemas/Copyright'
+        external_urls:
+          $ref: '#/components/schemas/ExternalURL'
+        href:
+          description: Un enlace al endpoint de la API web que proporciona
+            todos los detalles del himnario.
+          type: string
+        hymnal_type:
+          description: "El tipo de himnario: \"hymnal\", o \"songbook\"."
+          type: string
+        id:
+          description: El ID de SweetHymns para el himnario.
+          type: string
+        images:
+          description: La portada del himnario en varios tamaños, la más
+            amplia primero.
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        name:
+          description: El nombre del himnario.
+          type: string
+        release_date:
+          description: La fecha de la primera edición del himnario, por ejemplo
+            \"1981-12-15\". Dependiendo de la presición, el valor puede es
+            \"1981\" o \"1981-12\".
+          type: string
+        release_date_precision:
+          description: "La presición con que el valor de \"release_date\" es
+            conocido: \"year\", \"month\", o \"day\"."
+          type: string
+        type:
+          description: "El tipo de objeto: \"hymnal\"."
+          type: string
+        uri:
+          description: La URI de SweetHymns para el himnario.
+          type: string
+    Image:
+      type: object
+      properties:
+        height:
+          description: "La altura de la imagen en píxeles. Si se desconoce:
+            \"null\"."
+          type: integer
+        url:
+          description: La URL de la imagen.
+          type: string
+        width:
+          description: "El ancho de la imagen en píxeles. Si se desconoce:
+            \"null\"."
+          type: integer
+    SimplifiedAuthor:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    SimplifiedHymn:
+      type: object
+      required:
+        - authors
+        - musicians
+        - name
+        - type
+      properties:
+        authors:
+          description: Los autores que escribieron el himno. Cada objeto autor
+            incluye un enlace en \"href\" a información más detallada sobre el
+            autor.
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplifiedAuthor'
+        external_urls:
+          type: object
+          $ref: '#/components/schemas/ExternalURL'
+        href:
+          description: Un enlace al endpoint de la API web que proporciona
+            detalles completos del himno.
+          type: string
+        id:
+          description: El ID de SweetHymns para el himno.
+          type: string
+        musicians:
+          description: Los músicos que compusieron el himno. Cada objeto músico
+            incluye un enlace en \"href\" a información más detallada sobre el
+            músico.
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplifiedMusician'
+        name:
+          description: El nombre del himno.
+          type: string
+        type:
+          description: "El tipo de objeto. Valores validos: \"hymn\", \"salm\" o
+            \"song\"."
+          type: string
+    SimplifiedHymnal:
+      type: object
+      required:
+        - authors
+        - hymnal_type
+        - images
+        - name
+      properties:
+        authors:
+          description: Los autores del himnario. Cada objeto autor incluye un
+            enlace en \"href\" a información más detallada sobre el autor.
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplifiedAuthor'
+        external_urls:
+          $ref: '#/components/schemas/ExternalURL'
+        href:
+          description: Un enlace al endpoint de la API web que proporciona todos
+            los detalles del himnario.
+          type: string
+        hymnal_type:
+          description: "El tipo de himnario: \"hymnal\", o \"songbook\"."
+          type: string
+        id:
+          description: El ID de SweetHymns para el himnario.
+          type: string
+        images:
+          description: La portada del himnario en varios tamaños, la más amplia
+            primero.
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        name:
+          description: El nombre del himnario.
+          type: string
+        type:
+          description: "El tipo de objeto: \"hymnal\"."
+          type: string
+        uri:
+          description: La URI de SweetHymns para el himnario.
+          type: string
+    SimplifiedMusician:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+
+tags:
+  - name: Himnarios
+    description: Endpoints para recuperar información sobre uno o más himnarios
+      del catálogo de SweetHymns.
+  - name: Himnos
+    description: Endpoints para recuperar información sobre uno o más himnos
+      del catálogo de SweetHymns.
+  - name: Autores
+    description: Endpoints para recuperar información sobre uno o más autores
+      del catálogo de SweetHymns.
