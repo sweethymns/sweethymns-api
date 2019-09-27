@@ -38,11 +38,15 @@ paths:
             type: string
       responses:
         200:
-          description: En caso de éxito, el código de estado HTTP en el
-            encabezado de la respuesta es 200 OK y el cuerpo de la respuesta
-            contiene un objeto himnario. El objeto himnario contiene una matriz
-            de objetos himnarios simplificados (envueltos en un objeto de
-            paginación) en formato JSON.
+          description: "OK — La solicitud se ha realizado correctamente. El
+            cliente puede leer el resultado de la solicitud en el cuerpo y los
+            encabezados de la respuesta. El cuerpo de la respuesta contiene un
+            objeto \"hymnals\". El objeto \"hymnals\" contiene una matriz de
+            objetos himnarios simplificados (envueltos en un objeto de
+            paginación) en formato JSON.\n
+
+            Los objetos se devuelven en el orden solicitado. Si no se encuentra
+            un objeto, se devuelve un valor nulo en la posición adecuada."
           content:
             application/json:
               schema:
@@ -52,13 +56,25 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/SimplifiedHymnal'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+        503:
+          $ref: '#/components/responses/ServiceUnavailable'
   /hymnals/{id}:
     get:
       tags:
         - Himnarios
       summary: Recupera un himnario.
-      description: Recupera información del catálogo de SweetHymns para
-        un himnario identificado por su ID único de SweetHymns.
+      description: Recupera información del catálogo de SweetHymns para un
+        himnario identificado por su ID único de SweetHymns.
       operationId: getAnHymnal
       parameters:
         - name: id
@@ -69,13 +85,22 @@ paths:
             type: string
       responses:
         200:
-          description: En caso de éxito, el código de estado HTTP en el
-            encabezado de la respuesta es 200 OK y el cuerpo de la respuesta
-            contiene un objeto himnario en formato JSON.
+          description: OK — La solicitud se ha realizado correctamente. El
+            cuerpo de la respuesta contiene un objeto himnario en formato JSON.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Hymnal'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+        503:
+          $ref: '#/components/responses/ServiceUnavailable'
   /hymns:
     get:
       tags:
@@ -94,11 +119,15 @@ paths:
             type: string
       responses:
         200:
-          description: En caso de éxito, el código de estado HTTP en el
-            encabezado de la respuesta es 200 OK y el cuerpo de la respuesta
-            contiene un objeto himnos. El objeto himnos contiene una matriz de
-            objetos himnos simplificados (envueltos en un objeto de paginación)
-            en formato JSON.
+          description: "OK — La solicitud se ha realizado correctamente. El
+            cliente puede leer el resultado de la solicitud en el cuerpo y los
+            encabezados de la respuesta. El cuerpo de la respuesta contiene un
+            objeto \"hymns\". El objeto \"hymns\" contiene una matriz de objetos
+            himnos simplificados (envueltos en un objeto de paginación) en
+            formato JSON.
+
+            Los objetos se devuelven en el orden solicitado. Si no se encuentra
+            un objeto, se devuelve un valor nulo en la posición adecuada."
           content:
             application/json:
               schema:
@@ -108,6 +137,18 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/SimplifiedHymn'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+        503:
+          $ref: '#/components/responses/ServiceUnavailable'
   /hymns/{id}:
     get:
       tags:
@@ -125,13 +166,22 @@ paths:
             type: string
       responses:
         200:
-          description: En caso de éxito, el código de estado HTTP en el
-            encabezado de la respuesta es 200 OK y el cuerpo de la respuesta
-            contiene un objeto himno en formato JSON.
+          description: OK — La solicitud se ha realizado correctamente. El
+            cuerpo de la respuesta contiene un objeto himno en formato JSON.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Hymn'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+        503:
+          $ref: '#/components/responses/ServiceUnavailable'
 
 components:
   schemas:
@@ -150,15 +200,28 @@ components:
           type: string
     ExternalURL:
       type: object
-      required:
-        - "{key}"
-      properties:
-        "{key}":
-          description: "El tipo de URL, por ejemplo: - \"sweethymns\": la URL de
-            SweetHymns para el objeto."
-          type: string
+      additionalProperties:
+        description: "El tipo de URL, por ejemplo: - \"sweethymns\": la URL de
+          SweetHymns para el objeto."
+        type: string
       example:
         sweethymns: https://sweethymns.com/amazing-grace
+    RegularError:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          description: El código de estado HTTP que también se devuelve en el
+            encabezado de respuesta.
+          type: integer
+          format: int32
+          minimum: 200
+          maximum: 503
+        message:
+          description: Una breve descripción de la causa del error.
+          type: string
     Hymn:
       type: object
       required:
@@ -185,11 +248,7 @@ components:
           description: "El tipo de himno: \"hymn\", \"psalm\" o \"song\"."
           type: string
         hymnal:
-          description: El himnario en el que aparece la pista. El objeto
-            himnario incluye un enlace en \"href\" a información completa sobre
-            el himnario.
-          type: object
-          $ref:
+          $ref: '#/components/schemas/SimplifiedHymnal'
         id:
           description: El ID de SweetHymns para el himno.
           type: string
@@ -299,7 +358,6 @@ components:
           items:
             $ref: '#/components/schemas/SimplifiedAuthor'
         external_urls:
-          type: object
           $ref: '#/components/schemas/ExternalURL'
         href:
           description: Un enlace al endpoint de la API web que proporciona
@@ -370,6 +428,63 @@ components:
       properties:
         name:
           type: string
+  responses:
+    BadRequest:
+      description: Bad Request — El servidor no pudo entender la solicitud
+        debido a una sintaxis incorrecta. El código de estado del encabezado es
+        un código de error 400 y el cuerpo de la respuesta contiene un objeto
+        error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegularError'
+    Unauthorized:
+      description: Unauthorized — La solicitud requiere autenticación de usuario
+        o, si la solicitud incluía credenciales de autorización, la autorización
+        se ha rechazado para esas credenciales. El código de estado del
+        encabezado es un código de error 401 y el cuerpo de la respuesta
+        contiene un objeto error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegularError'
+    Forbidden:
+      description: Forbidden — El servidor entendió la solicitud, pero se niega
+        a cumplirla. El código de estado del encabezado es un código de error
+        403 y el cuerpo de la respuesta contiene un objeto error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegularError'
+    NotFound:
+      description: Not Found — No se pudo encontrar el recurso solicitado. Este
+        error puede deberse a una condición temporal o permanente. El código de
+        estado del encabezado es un código de error 404 y el cuerpo de la
+        respuesta contiene un objeto error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegularError'
+    InternalServerError:
+      description: Internal Server Error — Nunca debería recibir este error
+        porque nuestros codificadores inteligentes los detectan a todos... pero
+        si tiene la mala suerte de obtener uno, infórmenos con un email a
+        support@sweethymns.com. El código de estado del encabezado es un código
+        de error 500 y el cuerpo de la respuesta contiene un objeto error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegularError'
+    ServiceUnavailable:
+      description: Service Unavailable - El servidor actualmente no puede
+        manejar la solicitud debido a una condición temporal que se aliviará
+        después de un cierto tiempo. Puede optar por reenviar la solicitud
+        nuevamente. El código de estado del encabezado es un código de error 503
+        y el cuerpo de la respuesta contiene un objeto error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegularError'
 
 tags:
   - name: Himnarios
