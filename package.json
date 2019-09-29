@@ -1,7 +1,7 @@
 {
   "name": "sweethymns-api",
   "version": "0.0.0",
-  "description": "This is the SweetHymns RESTful API.",
+  "description": "The SweetHymns RESTful API built with Nest.js according to the OpenAPI specification.",
   "keywords": [
     "openapi",
     "swagger"

@@ -2,9 +2,10 @@ openapi: 3.0.2
 
 info:
   title: SweetHymns API
-  description: Basado en principios REST simples, los puntos finales de la API
-    web de SweetHymns devuelven metadatos JSON sobre autores, músicos, himnarios
-    e himnos, directamente desde el Catálogo de datos de SweetHymns.
+  description: >
+    Basado en principios REST simples, los puntos finales de la API web de
+    SweetHymns devuelven metadatos JSON sobre autores, músicos, himnarios e
+    himnos, directamente desde el Catálogo de datos de SweetHymns.
   termsOfService: https://sweethymns.com/terms
   contact:
     name: API Support
@@ -19,34 +20,41 @@ servers:
   - url: https://api.sweethymns.com/v1
     description: Production server
 
+security:
+  - BearerAuth: []
+  - OAuth2: [read]
+
 paths:
   /hymnals:
     get:
       tags:
         - Himnarios
       summary: Recupera múltiples himnarios.
-      description: Obtenga información del catálogo de SweetHymns para varios
-        himnarios identificados por sus IDs de SweetHymns.
+      description: >
+        Obtenga información del catálogo de SweetHymns para varios himnarios
+        identificados por sus IDs de SweetHymns.
       operationId: getMultipleHymnals
       parameters:
         - name: ids
           in: query
-          description: "Una lista separada por comas de los IDs de SweetHymns
-            para los himnarios. Máximo: 50 IDs."
+          description: >
+            Una lista separada por comas de los IDs de SweetHymns para los
+            himnarios. Máximo 50 IDs.
           required: true
           schema:
             type: string
       responses:
         200:
-          description: "OK — La solicitud se ha realizado correctamente. El
-            cliente puede leer el resultado de la solicitud en el cuerpo y los
-            encabezados de la respuesta. El cuerpo de la respuesta contiene un
-            objeto \"hymnals\". El objeto \"hymnals\" contiene una matriz de
-            objetos himnarios simplificados (envueltos en un objeto de
-            paginación) en formato JSON.\n
+          description: |
+            OK — La solicitud se ha realizado correctamente. El cliente puede
+            leer el resultado de la solicitud en el cuerpo y los encabezados de
+            la respuesta. El cuerpo de la respuesta contiene un objeto
+            \"hymnals\". El objeto \"hymnals\" contiene una matriz de objetos
+            himnarios simplificados (envueltos en un objeto de paginación) en
+            formato JSON.
 
             Los objetos se devuelven en el orden solicitado. Si no se encuentra
-            un objeto, se devuelve un valor nulo en la posición adecuada."
+            un objeto, se devuelve un valor nulo en la posición adecuada.
           content:
             application/json:
               schema:
@@ -73,8 +81,9 @@ paths:
       tags:
         - Himnarios
       summary: Recupera un himnario.
-      description: Recupera información del catálogo de SweetHymns para un
-        himnario identificado por su ID único de SweetHymns.
+      description: >
+        Recupera información del catálogo de SweetHymns para un himnario
+        identificado por su ID único de SweetHymns.
       operationId: getAnHymnal
       parameters:
         - name: id
@@ -85,8 +94,9 @@ paths:
             type: string
       responses:
         200:
-          description: OK — La solicitud se ha realizado correctamente. El
-            cuerpo de la respuesta contiene un objeto himnario en formato JSON.
+          description: >
+            OK — La solicitud se ha realizado correctamente. El cuerpo de la
+            respuesta contiene un objeto himnario en formato JSON.
           content:
             application/json:
               schema:
@@ -106,28 +116,31 @@ paths:
       tags:
         - Himnos
       summary: Recupera múltiples himnos.
-      description: Recupera información del catálogo de SweetHymns para
-        múltiples himnos identificados por sus IDs de SweetHymns.
+      description: >
+        Recupera información del catálogo de SweetHymns para múltiples himnos
+        identificados por sus IDs de SweetHymns.
       operationId: getMultipleHymns
       parameters:
         - name: ids
           in: query
-          description: "Una lista separada por comas de los IDs de SweetHymns
-            para los himnos. Máximo: 50 IDs."
+          description: >
+            Una lista separada por comas de los IDs de SweetHymns para los
+            himnos. Máximo 50 IDs.
           required: true
           schema:
             type: string
       responses:
         200:
-          description: "OK — La solicitud se ha realizado correctamente. El
-            cliente puede leer el resultado de la solicitud en el cuerpo y los
-            encabezados de la respuesta. El cuerpo de la respuesta contiene un
-            objeto \"hymns\". El objeto \"hymns\" contiene una matriz de objetos
-            himnos simplificados (envueltos en un objeto de paginación) en
-            formato JSON.
+          description: |
+            OK — La solicitud se ha realizado correctamente. El cliente puede
+            leer el resultado de la solicitud en el cuerpo y los encabezados de
+            la respuesta. El cuerpo de la respuesta contiene un objeto
+            \"hymns\". El objeto \"hymns\" contiene una matriz de objetos himnos
+            simplificados (envueltos en un objeto de paginación) en formato
+            JSON.
 
             Los objetos se devuelven en el orden solicitado. Si no se encuentra
-            un objeto, se devuelve un valor nulo en la posición adecuada."
+            un objeto, se devuelve un valor nulo en la posición adecuada.
           content:
             application/json:
               schema:
@@ -154,7 +167,8 @@ paths:
       tags:
         - Himnos
       summary: Recuperar un himno.
-      description: Recupera información del catálogo de SweetHymns para un himno
+      description: >
+        Recupera información del catálogo de SweetHymns para un himno
         identificado por su ID único de SweetHymns.
       operationId: getAnHymn
       parameters:
@@ -166,8 +180,9 @@ paths:
             type: string
       responses:
         200:
-          description: OK — La solicitud se ha realizado correctamente. El
-            cuerpo de la respuesta contiene un objeto himno en formato JSON.
+          description: >
+            OK — La solicitud se ha realizado correctamente. El cuerpo de la
+            respuesta contiene un objeto himno en formato JSON.
           content:
             application/json:
               schema:
@@ -195,14 +210,16 @@ components:
           description: El texto de copyright de este himnario.
           type: string
         type:
-          description: "El tipo de copyright: \"C\" = el copyright, \"P\" = el
-            copyright de grabación de sonido (performance)."
+          description: >
+            El tipo de copyright. \"C\" = el copyright, \"P\" = el copyright de
+            grabación de sonido (performance).
           type: string
     ExternalURL:
       type: object
       additionalProperties:
-        description: "El tipo de URL, por ejemplo: - \"sweethymns\": la URL de
-          SweetHymns para el objeto."
+        description: >
+          El tipo de URL, por ejemplo - \"sweethymns\" la URL de SweetHymns
+          para el objeto.
         type: string
       example:
         sweethymns: https://sweethymns.com/amazing-grace
@@ -213,8 +230,9 @@ components:
         - message
       properties:
         status:
-          description: El código de estado HTTP que también se devuelve en el
-            encabezado de respuesta.
+          description: >
+            El código de estado HTTP que también se devuelve en el encabezado de
+            respuesta.
           type: integer
           format: int32
           minimum: 200
@@ -232,20 +250,22 @@ components:
         - type
       properties:
         authors:
-          description: Los autores que escribieron el himno. Cada objeto autor
-            incluye un enlace en \"href\" a información más detallada sobre el
-            autor.
+          description: >
+            Los autores que escribieron el himno. Cada objeto autor incluye un
+            enlace en \"href\" a información más detallada sobre el autor.
           type: array
           items:
             $ref: '#/components/schemas/SimplifiedAuthor'
         external_urls:
           $ref: '#/components/schemas/ExternalURL'
         href:
-          description: Un enlace al endpoint de la API web que proporciona
-            detalles completos del himno.
+          description: >
+            Un enlace al endpoint de la API web que proporciona detalles
+            completos del himno.
           type: string
         hymn_type:
-          description: "El tipo de himno: \"hymn\", \"psalm\" o \"song\"."
+          description: >
+            El tipo de himno: \"hymn\", \"psalm\" o \"song\".
           type: string
         hymnal:
           $ref: '#/components/schemas/SimplifiedHymnal'
@@ -253,9 +273,9 @@ components:
           description: El ID de SweetHymns para el himno.
           type: string
         musicians:
-          description: Los músicos que compusieron el himno. Cada objeto músico
-            incluye un enlace en \"href\" a información más detallada sobre el
-            músico.
+          description: >
+            Los músicos que compusieron el himno. Cada objeto músico incluye un
+            enlace en \"href\" a información más detallada sobre el músico.
           type: array
           items:
             $ref: '#/components/schemas/SimplifiedMusician'
@@ -263,7 +283,7 @@ components:
           description: El nombre del himno.
           type: string
         type:
-          description: "El tipo de objeto: \"hymn\"."
+          description: El tipo de objeto \"hymn\".
           type: string
         uri:
           description: La URI de SweetHymns para el himno.
@@ -275,8 +295,9 @@ components:
         - copyrights
       properties:
         authors:
-          description: Los autores del himnario. Cada objeto autor incluye un
-            enlace en \"href\" a información más detallada sobre el autor.
+          description: >
+            Los autores del himnario. Cada objeto autor incluye un enlace en
+            \"href\" a información más detallada sobre el autor.
           type: array
           items:
             $ref: '#/components/schemas/SimplifiedAuthor'
@@ -288,18 +309,20 @@ components:
         external_urls:
           $ref: '#/components/schemas/ExternalURL'
         href:
-          description: Un enlace al endpoint de la API web que proporciona
-            todos los detalles del himnario.
+          description: >
+            Un enlace al endpoint de la API web que proporciona todos los
+            detalles del himnario.
           type: string
         hymnal_type:
-          description: "El tipo de himnario: \"hymnal\", o \"songbook\"."
+          description: >
+            El tipo de himnario. Valores validos \"hymnal\" o \"songbook\".
           type: string
         id:
           description: El ID de SweetHymns para el himnario.
           type: string
         images:
-          description: La portada del himnario en varios tamaños, la más
-            amplia primero.
+          description: >
+            La portada del himnario en varios tamaños, la más amplia primero.
           type: array
           items:
             $ref: '#/components/schemas/Image'
@@ -307,16 +330,18 @@ components:
           description: El nombre del himnario.
           type: string
         release_date:
-          description: La fecha de la primera edición del himnario, por ejemplo
-            \"1981-12-15\". Dependiendo de la presición, el valor puede es
+          description: >
+            La fecha de la primera edición del himnario, por ejemplo
+            \"1981-12-15\". Dependiendo de la presición, el valor puede ser
             \"1981\" o \"1981-12\".
           type: string
         release_date_precision:
-          description: "La presición con que el valor de \"release_date\" es
-            conocido: \"year\", \"month\", o \"day\"."
+          description: >
+            La presición con que el valor de \"release_date\" es conocido. Puede
+            ser \"year\", \"month\", o \"day\".
           type: string
         type:
-          description: "El tipo de objeto: \"hymnal\"."
+          description: El tipo de objeto \"hymnal\".
           type: string
         uri:
           description: La URI de SweetHymns para el himnario.
@@ -325,15 +350,15 @@ components:
       type: object
       properties:
         height:
-          description: "La altura de la imagen en píxeles. Si se desconoce:
-            \"null\"."
+          description: >
+            La altura de la imagen en píxeles. Si se desconoce será \"null\".
           type: integer
         url:
           description: La URL de la imagen.
           type: string
         width:
-          description: "El ancho de la imagen en píxeles. Si se desconoce:
-            \"null\"."
+          description: >
+            El ancho de la imagen en píxeles. Si se desconoce será \"null\".
           type: integer
     SimplifiedAuthor:
       type: object
@@ -351,25 +376,26 @@ components:
         - type
       properties:
         authors:
-          description: Los autores que escribieron el himno. Cada objeto autor
-            incluye un enlace en \"href\" a información más detallada sobre el
-            autor.
+          description: >
+            Los autores que escribieron el himno. Cada objeto autor incluye un
+            enlace en \"href\" a información más detallada sobre el autor.
           type: array
           items:
             $ref: '#/components/schemas/SimplifiedAuthor'
         external_urls:
           $ref: '#/components/schemas/ExternalURL'
         href:
-          description: Un enlace al endpoint de la API web que proporciona
-            detalles completos del himno.
+          description: >
+            Un enlace al endpoint de la API web que proporciona detalles
+            completos del himno.
           type: string
         id:
           description: El ID de SweetHymns para el himno.
           type: string
         musicians:
-          description: Los músicos que compusieron el himno. Cada objeto músico
-            incluye un enlace en \"href\" a información más detallada sobre el
-            músico.
+          description: >
+            Los músicos que compusieron el himno. Cada objeto músico incluye un
+            enlace en \"href\" a información más detallada sobre el músico.
           type: array
           items:
             $ref: '#/components/schemas/SimplifiedMusician'
@@ -377,8 +403,8 @@ components:
           description: El nombre del himno.
           type: string
         type:
-          description: "El tipo de objeto. Valores validos: \"hymn\", \"salm\" o
-            \"song\"."
+          description: >
+            El tipo de objeto. Valores validos \"hymn\", \"salm\" o \"song\".
           type: string
     SimplifiedHymnal:
       type: object
@@ -389,26 +415,29 @@ components:
         - name
       properties:
         authors:
-          description: Los autores del himnario. Cada objeto autor incluye un
-            enlace en \"href\" a información más detallada sobre el autor.
+          description: >
+            Los autores del himnario. Cada objeto autor incluye un enlace en
+            \"href\" a información más detallada sobre el autor.
           type: array
           items:
             $ref: '#/components/schemas/SimplifiedAuthor'
         external_urls:
           $ref: '#/components/schemas/ExternalURL'
         href:
-          description: Un enlace al endpoint de la API web que proporciona todos
-            los detalles del himnario.
+          description: >
+            Un enlace al endpoint de la API web que proporciona todos los
+            detalles del himnario.
           type: string
         hymnal_type:
-          description: "El tipo de himnario: \"hymnal\", o \"songbook\"."
+          description: >
+            El tipo de himnario. Valores validos \"hymnal\" o \"songbook\".
           type: string
         id:
           description: El ID de SweetHymns para el himnario.
           type: string
         images:
-          description: La portada del himnario en varios tamaños, la más amplia
-            primero.
+          description: >
+            La portada del himnario en varios tamaños, la más amplia primero.
           type: array
           items:
             $ref: '#/components/schemas/Image'
@@ -416,7 +445,7 @@ components:
           description: El nombre del himnario.
           type: string
         type:
-          description: "El tipo de objeto: \"hymnal\"."
+          description: El tipo de objeto \"hymnal\".
           type: string
         uri:
           description: La URI de SweetHymns para el himnario.
@@ -430,69 +459,91 @@ components:
           type: string
   responses:
     BadRequest:
-      description: Bad Request — El servidor no pudo entender la solicitud
-        debido a una sintaxis incorrecta. El código de estado del encabezado es
-        un código de error 400 y el cuerpo de la respuesta contiene un objeto
-        error.
+      description: >
+        Bad Request — El servidor no pudo entender la solicitud debido a una
+        sintaxis incorrecta. El código de estado del encabezado es un código de
+        error 400 y el cuerpo de la respuesta contiene un objeto error.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/RegularError'
     Unauthorized:
-      description: Unauthorized — La solicitud requiere autenticación de usuario
-        o, si la solicitud incluía credenciales de autorización, la autorización
-        se ha rechazado para esas credenciales. El código de estado del
-        encabezado es un código de error 401 y el cuerpo de la respuesta
-        contiene un objeto error.
+      description: >
+        Unauthorized — La solicitud requiere autenticación de usuario o, si la
+        solicitud incluía credenciales de autorización, la autorización se ha
+        rechazado para esas credenciales. El código de estado del encabezado es
+        un código de error 401 y el cuerpo de la respuesta contiene un objeto
+        error.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/RegularError'
     Forbidden:
-      description: Forbidden — El servidor entendió la solicitud, pero se niega
-        a cumplirla. El código de estado del encabezado es un código de error
-        403 y el cuerpo de la respuesta contiene un objeto error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RegularError'
-    NotFound:
-      description: Not Found — No se pudo encontrar el recurso solicitado. Este
-        error puede deberse a una condición temporal o permanente. El código de
-        estado del encabezado es un código de error 404 y el cuerpo de la
-        respuesta contiene un objeto error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RegularError'
-    InternalServerError:
-      description: Internal Server Error — Nunca debería recibir este error
-        porque nuestros codificadores inteligentes los detectan a todos... pero
-        si tiene la mala suerte de obtener uno, infórmenos con un email a
-        support@sweethymns.com. El código de estado del encabezado es un código
-        de error 500 y el cuerpo de la respuesta contiene un objeto error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RegularError'
-    ServiceUnavailable:
-      description: Service Unavailable - El servidor actualmente no puede
-        manejar la solicitud debido a una condición temporal que se aliviará
-        después de un cierto tiempo. Puede optar por reenviar la solicitud
-        nuevamente. El código de estado del encabezado es un código de error 503
+      description: >
+        Forbidden — El servidor entendió la solicitud, pero se niega a
+        cumplirla. El código de estado del encabezado es un código de error 403
         y el cuerpo de la respuesta contiene un objeto error.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/RegularError'
+    NotFound:
+      description: >
+        Not Found — No se pudo encontrar el recurso solicitado. Este error puede
+        deberse a una condición temporal o permanente. El código de estado del
+        encabezado es un código de error 404 y el cuerpo de la respuesta
+        contiene un objeto error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegularError'
+    InternalServerError:
+      description: >
+        Internal Server Error — Nunca debería recibir este error porque nuestros
+        codificadores inteligentes los detectan a todos... pero si tiene la mala
+        suerte de obtener uno, infórmenos con un email a support@sweethymns.com.
+        El código de estado del encabezado es un código de error 500 y el cuerpo
+        de la respuesta contiene un objeto error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegularError'
+    ServiceUnavailable:
+      description: >
+        Service Unavailable - El servidor actualmente no puede manejar la
+        solicitud debido a una condición temporal que se aliviará después de un
+        cierto tiempo. Puede optar por reenviar la solicitud nuevamente. El
+        código de estado del encabezado es un código de error 503 y el cuerpo de
+        la respuesta contiene un objeto error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegularError'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.sweethymns.com/oauth/token
+          scopes:
+            read: Otorga acceso de lectura.
+            write: Otorga acceso de escritura.
+            admin: Otorga acceso a operaciones administrativas.
 
 tags:
   - name: Himnarios
-    description: Endpoints para recuperar información sobre uno o más himnarios
-      del catálogo de SweetHymns.
+    description: >
+      Endpoints para recuperar información sobre uno o más himnarios del
+      catálogo de SweetHymns.
   - name: Himnos
-    description: Endpoints para recuperar información sobre uno o más himnos
-      del catálogo de SweetHymns.
+    description: >
+      Endpoints para recuperar información sobre uno o más himnos del catálogo
+      de SweetHymns.
   - name: Autores
-    description: Endpoints para recuperar información sobre uno o más autores
-      del catálogo de SweetHymns.
+    description: >
+      Endpoints para recuperar información sobre uno o más autores del catálogo
+      de SweetHymns.
