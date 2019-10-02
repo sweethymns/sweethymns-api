@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-
 import * as dotenv from 'dotenv';
-import * as Joi from '@hapi/joi';
 import * as fs from 'fs';
+import * as Joi from '@hapi/joi';
 
 export interface EnvConfig {
   [key: string]: string;
@@ -36,8 +35,9 @@ export class ConfigService {
         .default('development'),
       PORT: Joi.number().default(3000),
       API_AUTH_ENABLED: Joi.boolean().required(),
-      DATABASE_USER: Joi.string().required(),
-      DATABASE_PASSWORD: Joi.string().required(),
+      DATABASE_URI: Joi.string()
+        .uri()
+        .required(),
     });
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
       envConfig,
