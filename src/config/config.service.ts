@@ -24,6 +24,10 @@ export class ConfigService {
     return Boolean(this.envConfig.API_AUTH_ENABLED);
   }
 
+  get dbUri(): string {
+    return `mongodb+srv://${this.envConfig.DB_USER}:${this.envConfig.DB_PASSWORD}@${this.envConfig.DB_HOST}/${this.envConfig.DB_NAME}?retryWrites=true&w=majority`;
+  }
+
   /**
    * Ensures all needed variables are set, and returns the validated JavaScript
    * object including the applied default values.
@@ -35,9 +39,12 @@ export class ConfigService {
         .default('development'),
       PORT: Joi.number().default(3000),
       API_AUTH_ENABLED: Joi.boolean().required(),
-      DATABASE_URI: Joi.string()
-        .uri()
+      DB_USER: Joi.string().required(),
+      DB_PASSWORD: Joi.string().required(),
+      DB_HOST: Joi.string()
+        .hostname()
         .required(),
+      DB_NAME: Joi.string().required(),
     });
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
       envConfig,
