@@ -200,8 +200,35 @@ paths:
 
 components:
   schemas:
+    Copyright:
+      type: object
+      required:
+        - text
+        - type
+      properties:
+        text:
+          description: El texto de copyright.
+          type: string
+        type:
+          description: >
+            El tipo de copyright. \"C\" = el copyright, \"P\" = el copyright de
+            grabación de sonido (performance).
+          type: string
+    ExternalID:
+      type: object
+      description: Un identificador externo para el objeto.
+      additionalProperties:
+        description: >
+          El tipo de identificador, por ejemplo - \"isrc\" International
+          Standard Recording Code. - \"ean\" International Article Number.
+          - \"upc\" Universal Product Code. - \"isbn\" International Standard
+          Book Number.
+        type: string
+      example:
+        isbn: 84-7645-149-0
     ExternalURL:
       type: object
+      description: Una URL pública externa al objeto.
       additionalProperties:
         description: >
           El tipo de URL, por ejemplo - \"sweethymns\" la URL de SweetHymns
@@ -279,6 +306,7 @@ components:
       required:
         - copyrights
         - hymnal_type
+        - language
         - name
         - release_date
       properties:
@@ -286,7 +314,12 @@ components:
           type: array
           description: Las declaraciones de copyright del himnario.
           items:
-            type: string
+            $ref: '#/components/schemas/Copyright'
+        description:
+          type: string
+          description: La descripción del himnario.
+        external_ids:
+          $ref: '#/components/schemas/ExternalID'
         external_urls:
           $ref: '#/components/schemas/ExternalURL'
         href:
@@ -301,6 +334,8 @@ components:
         id:
           description: El ID de SweetHymns para el himnario.
           type: string
+        language:
+          $ref: '#/components/schemas/Language'
         name:
           description: El nombre del himnario.
           type: string
@@ -321,6 +356,20 @@ components:
         uri:
           description: La URI de SweetHymns para el himnario.
           type: string
+    Language:
+      type: object
+      required:
+        - code
+        - name
+      description: >
+        El tipo de lenguaje identificado por su código ISO 639-2.
+      properties:
+        code:
+          type: string
+          description: El código del lenguaje.
+        name:
+          type: string
+          description: El nombre del lenguaje.
     SimplifiedAuthor:
       type: object
       required:
@@ -373,6 +422,9 @@ components:
         - hymnal_type
         - name
       properties:
+        description:
+          type: string
+          description: La descripción del himnario.
         external_urls:
           $ref: '#/components/schemas/ExternalURL'
         href:
@@ -387,6 +439,8 @@ components:
         id:
           description: El ID de SweetHymns para el himnario.
           type: string
+        language:
+          $ref: '#/components/schemas/Language'
         name:
           description: El nombre del himnario.
           type: string
