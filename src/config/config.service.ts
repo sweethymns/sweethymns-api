@@ -45,6 +45,8 @@ export class ConfigService {
         .hostname()
         .required(),
       DB_NAME: Joi.string().required(),
+      JWT_SECRET: Joi.string().required(),
+      JWT_EXPIRATION: Joi.string().required(),
     });
     const { error, value: validatedEnvConfig } = envVarsSchema.validate(
       envConfig,
