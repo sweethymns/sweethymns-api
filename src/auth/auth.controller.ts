@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UseGuards(AuthGuard('oauth2-client-password'))
+  @UseGuards(AuthGuard('basic'))
   @Post('token')
   async authenticate(@Request() req) {
     return this.authService.authenticate(req.user);

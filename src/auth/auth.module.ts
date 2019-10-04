@@ -8,7 +8,7 @@ import { ConfigService } from '../config/config.service';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { ClientPasswordStrategy } from './client-password.strategy';
+import { HttpBasicStrategy } from './http-basic.strategy';
 import { JwtStrategy } from './jwt.strategy';
 
 @Module({
@@ -26,6 +26,6 @@ import { JwtStrategy } from './jwt.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, ClientPasswordStrategy, JwtStrategy],
+  providers: [AuthService, HttpBasicStrategy, JwtStrategy],
 })
 export class AuthModule {}
