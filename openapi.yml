@@ -200,20 +200,6 @@ paths:
 
 components:
   schemas:
-    Copyright:
-      type: object
-      required:
-        - text
-        - type
-      properties:
-        text:
-          description: El texto de copyright de este himnario.
-          type: string
-        type:
-          description: >
-            El tipo de copyright. \"C\" = el copyright, \"P\" = el copyright de
-            grabación de sonido (performance).
-          type: string
     ExternalURL:
       type: object
       additionalProperties:
@@ -291,21 +277,16 @@ components:
     Hymnal:
       type: object
       required:
-        - authors
         - copyrights
+        - hymnal_type
+        - name
+        - release_date
       properties:
-        authors:
-          description: >
-            Los autores del himnario. Cada objeto autor incluye un enlace en
-            \"href\" a información más detallada sobre el autor.
-          type: array
-          items:
-            $ref: '#/components/schemas/SimplifiedAuthor'
         copyrights:
           type: array
           description: Las declaraciones de copyright del himnario.
           items:
-            $ref: '#/components/schemas/Copyright'
+            type: string
         external_urls:
           $ref: '#/components/schemas/ExternalURL'
         href:
@@ -320,12 +301,6 @@ components:
         id:
           description: El ID de SweetHymns para el himnario.
           type: string
-        images:
-          description: >
-            La portada del himnario en varios tamaños, la más amplia primero.
-          type: array
-          items:
-            $ref: '#/components/schemas/Image'
         name:
           description: El nombre del himnario.
           type: string
@@ -346,20 +321,6 @@ components:
         uri:
           description: La URI de SweetHymns para el himnario.
           type: string
-    Image:
-      type: object
-      properties:
-        height:
-          description: >
-            La altura de la imagen en píxeles. Si se desconoce será \"null\".
-          type: integer
-        url:
-          description: La URL de la imagen.
-          type: string
-        width:
-          description: >
-            El ancho de la imagen en píxeles. Si se desconoce será \"null\".
-          type: integer
     SimplifiedAuthor:
       type: object
       required:
@@ -409,18 +370,9 @@ components:
     SimplifiedHymnal:
       type: object
       required:
-        - authors
         - hymnal_type
-        - images
         - name
       properties:
-        authors:
-          description: >
-            Los autores del himnario. Cada objeto autor incluye un enlace en
-            \"href\" a información más detallada sobre el autor.
-          type: array
-          items:
-            $ref: '#/components/schemas/SimplifiedAuthor'
         external_urls:
           $ref: '#/components/schemas/ExternalURL'
         href:
@@ -435,12 +387,6 @@ components:
         id:
           description: El ID de SweetHymns para el himnario.
           type: string
-        images:
-          description: >
-            La portada del himnario en varios tamaños, la más amplia primero.
-          type: array
-          items:
-            $ref: '#/components/schemas/Image'
         name:
           description: El nombre del himnario.
           type: string
