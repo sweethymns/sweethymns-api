@@ -60,7 +60,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  hymnals:
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                  data:
                     type: array
                     items:
                       $ref: '#/components/schemas/SimplifiedHymnal'
@@ -422,34 +427,32 @@ components:
         - hymnal_type
         - name
       properties:
-        description:
-          type: string
-          description: La descripción del himnario.
-        external_urls:
-          $ref: '#/components/schemas/ExternalURL'
-        href:
-          description: >
-            Un enlace al endpoint de la API web que proporciona todos los
-            detalles del himnario.
-          type: string
-        hymnal_type:
-          description: >
-            El tipo de himnario. Valores validos \"hymnal\" o \"songbook\".
-          type: string
         id:
           description: El ID de SweetHymns para el himnario.
           type: string
-        language:
-          $ref: '#/components/schemas/Language'
-        name:
-          description: El nombre del himnario.
-          type: string
         type:
-          description: El tipo de objeto \"hymnal\".
+          description: >
+            El tipo de objeto. Valores validos \"hymnal\" o \"songbook\".
           type: string
-        uri:
-          description: La URI de SweetHymns para el himnario.
-          type: string
+        attributes:
+          type: object
+          properties:
+            description:
+              type: string
+              description: La descripción del himnario.
+            language:
+              $ref: '#/components/schemas/Language'
+            name:
+              description: El nombre del himnario.
+              type: string
+        links:
+          type: object
+          properties:
+            self:
+              description: >
+                Un enlace al endpoint de la API web que proporciona todos los
+                detalles del himnario.
+              type: string
     SimplifiedMusician:
       type: object
       required:
