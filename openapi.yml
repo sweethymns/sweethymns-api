@@ -49,7 +49,7 @@ paths:
             OK — La solicitud se ha realizado correctamente. El cliente puede
             leer el resultado de la solicitud en el cuerpo y los encabezados de
             la respuesta. El cuerpo de la respuesta contiene un objeto
-            \"hymnals\". El objeto \"hymnals\" contiene una matriz de objetos
+            \"data\". El objeto \"data\" contiene una matriz de objetos
             himnarios simplificados (envueltos en un objeto de paginación) en
             formato JSON.
 
@@ -105,7 +105,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Hymnal'
+                type: object
+                properties:
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        description: >
+                          Un enlace al endpoint de la API web que proporciona
+                          todos los detalles del himnario.
+                  data:
+                    $ref: '#/components/schemas/Hymnal'
         401:
           $ref: '#/components/responses/Unauthorized'
         403:
@@ -309,58 +320,47 @@ components:
     Hymnal:
       type: object
       required:
-        - copyrights
-        - hymnal_type
-        - language
-        - name
-        - release_date
+        - type
       properties:
-        copyrights:
-          type: array
-          description: Las declaraciones de copyright del himnario.
-          items:
-            $ref: '#/components/schemas/Copyright'
-        description:
-          type: string
-          description: La descripción del himnario.
-        external_ids:
-          $ref: '#/components/schemas/ExternalID'
-        external_urls:
-          $ref: '#/components/schemas/ExternalURL'
-        href:
+        type:
           description: >
-            Un enlace al endpoint de la API web que proporciona todos los
-            detalles del himnario.
-          type: string
-        hymnal_type:
-          description: >
-            El tipo de himnario. Valores validos \"hymnal\" o \"songbook\".
+            El tipo de objeto. Valores validos \"hymnal\" o \"songbook\".
           type: string
         id:
           description: El ID de SweetHymns para el himnario.
           type: string
-        language:
-          $ref: '#/components/schemas/Language'
-        name:
-          description: El nombre del himnario.
-          type: string
-        release_date:
-          description: >
-            La fecha de la primera edición del himnario, por ejemplo
-            \"1981-12-15\". Dependiendo de la presición, el valor puede ser
-            \"1981\" o \"1981-12\".
-          type: string
-        release_date_precision:
-          description: >
-            La presición con que el valor de \"release_date\" es conocido. Puede
-            ser \"year\", \"month\", o \"day\".
-          type: string
-        type:
-          description: El tipo de objeto \"hymnal\".
-          type: string
-        uri:
-          description: La URI de SweetHymns para el himnario.
-          type: string
+        attributes:
+          type: object
+          properties:
+            description:
+              type: string
+              description: La descripción del himnario.
+            external_ids:
+              $ref: '#/components/schemas/ExternalID'
+            language:
+              $ref: '#/components/schemas/Language'
+            name:
+              description: El nombre del himnario.
+              type: string
+            release_date:
+              description: >
+                La fecha de la primera edición del himnario, por ejemplo
+                \"1981-12-15\". Dependiendo de la presición, el valor puede ser
+                \"1981\" o \"1981-12\".
+              type: string
+            release_date_precision:
+              description: >
+                La presición con que el valor de \"release_date\" es conocido.
+                Puede ser \"year\", \"month\", o \"day\".
+              type: string
+        meta:
+          type: object
+          properties:
+            copyrights:
+              type: array
+              description: Las declaraciones de copyright del himnario.
+              items:
+                $ref: '#/components/schemas/Copyright'
     Language:
       type: object
       required:
@@ -424,8 +424,7 @@ components:
     SimplifiedHymnal:
       type: object
       required:
-        - hymnal_type
-        - name
+        - type
       properties:
         id:
           description: El ID de SweetHymns para el himnario.
