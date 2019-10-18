@@ -10,7 +10,7 @@ import { ConfigService } from '../config/config.service';
 import { AccessToken } from './interfaces/access-token.interface';
 
 @Injectable()
-export class AuthService {
+export class OauthService {
   constructor(
     private readonly clientsService: ClientsService,
     private readonly jwtService: JwtService,

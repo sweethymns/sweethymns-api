@@ -6,8 +6,8 @@ import { ClientsModule } from '../clients/clients.module';
 import { ConfigModule } from '../config/config.module';
 import { ConfigService } from '../config/config.service';
 
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { OauthController } from './oauth.controller';
+import { OauthService } from './oauth.service';
 import { HttpBasicStrategy } from './http-basic.strategy';
 import { JwtStrategy } from './jwt.strategy';
 
@@ -25,7 +25,7 @@ import { JwtStrategy } from './jwt.strategy';
       inject: [ConfigService],
     }),
   ],
-  controllers: [AuthController],
-  providers: [AuthService, HttpBasicStrategy, JwtStrategy],
+  controllers: [OauthController],
+  providers: [OauthService, HttpBasicStrategy, JwtStrategy],
 })
-export class AuthModule {}
+export class OauthModule {}

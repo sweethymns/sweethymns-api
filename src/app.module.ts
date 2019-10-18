@@ -3,14 +3,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
+import { OauthModule } from './oauth/oauth.module';
 import { ClientsModule } from './clients/clients.module';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
 
 @Module({
   imports: [
-    AuthModule,
+    OauthModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
