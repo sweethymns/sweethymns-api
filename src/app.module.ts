@@ -7,6 +7,7 @@ import { OauthModule } from './oauth/oauth.module';
 import { ClientsModule } from './clients/clients.module';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
+import { HymnalsModule } from './hymnals/hymnals.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ConfigService } from './config/config.service';
     }),
     ConfigModule,
     ClientsModule,
+    HymnalsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
