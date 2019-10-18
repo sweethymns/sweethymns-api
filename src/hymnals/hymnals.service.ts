@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -23,5 +23,14 @@ export class HymnalsService {
     }
 
     return hymnals;
+  }
+
+  async findById(id: string): Promise<Hymnal> {
+    try {
+      const hymnal: Hymnal = await this.hymnalModel.findById(id);
+      return hymnal;
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 }
