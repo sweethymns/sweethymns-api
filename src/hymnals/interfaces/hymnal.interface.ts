@@ -5,8 +5,9 @@ export interface Hymnal extends Document {
   description: string;
   externalIds: {};
   language: {};
-  typeName: string;
   name: string;
   releaseDate: string;
   releaseDatePrecision: string;
+  totalHymns: number;
+  typeName: string;
 }

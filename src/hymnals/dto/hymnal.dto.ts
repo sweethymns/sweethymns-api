@@ -32,6 +32,7 @@ export class HymnalDTO {
         name: this.hymnal.name,
         releaseDate: this.hymnal.releaseDate,
         releaseDatePrecision: this.hymnal.releaseDatePrecision,
+        totalHymns: this.hymnal.totalHymns,
       },
       meta: {
         copyrights: this.hymnal.copyrights,

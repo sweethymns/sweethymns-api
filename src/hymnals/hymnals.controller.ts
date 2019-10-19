@@ -26,7 +26,7 @@ export class HymnalsController {
     @Query() findHymnalsParams: FindHymnalsParams,
   ): Promise<HymnalsDTO> {
     const ids: string[] = findHymnalsParams.ids.split(',');
-    const hymnals = await this.hymnalsService.find(ids);
+    const hymnals: Hymnal[] = await this.hymnalsService.find(ids);
     return new HymnalsDTO({ hymnals });
   }
 

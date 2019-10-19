@@ -10,8 +10,8 @@ export class HymnalsService {
     @InjectModel('Hymnal') private readonly hymnalModel: Model<Hymnal>,
   ) {}
 
-  async find(ids: string[]): Promise<any[]> {
-    const hymnals: any[] = [];
+  async find(ids: string[]): Promise<Hymnal[]> {
+    const hymnals: Hymnal[] = [];
 
     for (let index = 0; index < ids.length; index++) {
       try {

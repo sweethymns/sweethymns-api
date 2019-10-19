@@ -5,8 +5,9 @@ export const HymnalSchema = new mongoose.Schema({
   description: String,
   externalIds: Object,
   language: Object,
-  typeName: String,
   name: String,
   releaseDate: String,
   releaseDatePrecision: String,
+  totalHymns: Number,
+  typeName: String,
 });

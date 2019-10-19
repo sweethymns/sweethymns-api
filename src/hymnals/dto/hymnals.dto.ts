@@ -38,9 +38,10 @@ export class HymnalsDTO {
       type: hymnal.typeName,
       id: hymnal._id.toString(),
       attributes: {
-        name: hymnal.name,
         description: hymnal.description,
         language: hymnal.language,
+        name: hymnal.name,
+        totalHymns: hymnal.totalHymns,
       },
       links: {
         self: `${HYMNALS_ENDPOINT}/${hymnal._id}`,
