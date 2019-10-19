@@ -353,6 +353,9 @@ components:
                 La presición con que el valor de \"release_date\" es conocido.
                 Puede ser \"year\", \"month\", o \"day\".
               type: string
+            totalHymns:
+              description: El número total de himnos del himnario.
+              type: number
         meta:
           type: object
           properties:
@@ -444,6 +447,9 @@ components:
             name:
               description: El nombre del himnario.
               type: string
+            totalHymns:
+              description: El número total de himnos del himnario.
+              type: number
         links:
           type: object
           properties:
