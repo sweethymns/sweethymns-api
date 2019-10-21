@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { FindHymnalsParams } from './params/find-hymnals.params';
 import { Hymnal } from './interfaces/hymnal.interface';
 import { HymnalDTO } from './dto/hymnal.dto';
 import { HymnalsDTO } from './dto/hymnals.dto';
@@ -22,18 +21,15 @@ export class HymnalsController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  async find(
-    @Query() findHymnalsParams: FindHymnalsParams,
-  ): Promise<HymnalsDTO> {
-    const ids: string[] = findHymnalsParams.ids.split(',');
-    const hymnals: Hymnal[] = await this.hymnalsService.find(ids);
+  async getHymnalsByIds(@Query('ids') ids: string): Promise<HymnalsDTO> {
+    const hymnals: Hymnal[] = await this.hymnalsService.findHymnalsByIds(ids);
     return new HymnalsDTO({ hymnals });
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<HymnalDTO> {
-    const hymnal: Hymnal = await this.hymnalsService.findById(id);
+  async getHymnalById(@Param('id') id: string): Promise<HymnalDTO> {
+    const hymnal: Hymnal = await this.hymnalsService.findHymnalById(id);
     return new HymnalDTO({ hymnal });
   }
 }
